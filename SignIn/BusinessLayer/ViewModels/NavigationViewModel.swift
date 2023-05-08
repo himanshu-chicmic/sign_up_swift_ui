@@ -9,14 +9,15 @@ import Foundation
 
 /// NavigationViewModel class
 /// view model class used for navigation using navigation stack paths
-final class NavigationViewModel: ObservableObject {
+class NavigationViewModel: ObservableObject {
     
     // a static instance of navigation view model class
     static let navigationViewModel = NavigationViewModel()
     
-    
+    /// default initializer to check if user is already logged in or not
+    /// if logged in go to dashboard view directly
     private init() {
-        if let val = UserDefaults.standard.value(forKey: Constants.sessionAuthToken) as? String{
+        if let val = UserDefaults.standard.value(forKey: Constants.UserDefaultKeys.sessionAuthToken) as? String{
             if !val.isEmpty {
                 push(.DashboardView)
             }

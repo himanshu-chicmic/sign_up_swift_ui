@@ -12,16 +12,16 @@ struct ContentView: View {
     // MARK: properties
     
     // state objects for signin view model and navigation view model
-    @StateObject private var signInViewModel = SignInViewModel()
-    @StateObject private var navigationViewModel = NavigationViewModel.navigationViewModel
+    @StateObject private var viewModelObj = ViewModelBase()
+    @StateObject private var navigationViewModelObj = NavigationViewModel.navigationViewModel
     
     // MARK: body
     
     var body: some View {
         
         // navigation stack with root view as SignInView()
-        NavigationStack(path: $navigationViewModel.paths) {
-            
+        NavigationStack(path: $navigationViewModelObj.paths) {
+            // SignInView() is the root view of app
             SignInView()
                 .navigationDestination(for: ViewIdentifiers.self) {
                     path in
@@ -34,9 +34,10 @@ struct ContentView: View {
                 }
                 // hides navigation bar back button
                 .navigationBarBackButtonHidden(true)
+            
         }
         // set signInViewModel in environmentObject
-        .environmentObject(signInViewModel)
+        .environmentObject(viewModelObj)
     }
 }
 

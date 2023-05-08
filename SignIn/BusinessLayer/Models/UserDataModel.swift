@@ -2,22 +2,15 @@
 //  UserDataModel.swift
 //  SignIn
 //
-//  Created by Nitin on 5/4/23.
+//  Created by Himanshu on 5/4/23.
 //
 
 import Foundation
 
-// This file was generated from JSON Schema using quicktype, do not modify it directly.
-// To parse the JSON, add this file to your project and do:
-//
-//   let welcome = try? JSONDecoder().decode(Welcome.self, from: jsonData)
-
-import Foundation
-
-// MARK: - Welcome
-struct Welcome: Codable {
+// MARK: - UserDataModel
+struct UserDataModel: Codable {
     let status: Status
-    let imageURL: String
+    let imageURL: URL?
 
     enum CodingKeys: String, CodingKey {
         case status
@@ -42,11 +35,11 @@ struct DataClass: Codable {
     let createdAt, updatedAt: String
 
     enum CodingKeys: String, CodingKey {
-        case userID = "user_id"
-        case firstName = "first_name"
-        case lastName = "last_name"
+        case userID     = "user_id"
+        case firstName  = "first_name"
+        case lastName   = "last_name"
         case age, gender, id
-        case createdAt = "created_at"
-        case updatedAt = "updated_at"
+        case createdAt  = "created_at"
+        case updatedAt  = "updated_at"
     }
 }

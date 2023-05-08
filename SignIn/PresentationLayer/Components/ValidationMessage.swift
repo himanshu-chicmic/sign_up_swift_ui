@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+
+/// view for showing validation messages
 struct ValidationMessage: View {
     
     // binding variable for validation message

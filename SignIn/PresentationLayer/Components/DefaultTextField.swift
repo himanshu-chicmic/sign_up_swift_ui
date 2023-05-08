@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+
+/// view for showing default text fields in the app
 struct DefaultTextField: View {
     
     // textfield placeholder string

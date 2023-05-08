@@ -11,7 +11,7 @@ import SwiftUI
 
 /// SignInViewModel class
 /// view model class for sending api request
-final class ViewModelBase: ObservableObject {
+class ViewModelBase: ObservableObject {
     
     // bool value for showing error alerts
     @Published var showErrorAlert: Bool = false
@@ -33,26 +33,26 @@ final class ViewModelBase: ObservableObject {
     
     // property to get type of signin (heading/title)
     var signInType: String {
-        isNewUser ? Constants.signUp : Constants.logIn
+        isNewUser ? Constants.SignInView.titleSignUp : Constants.SignInView.titleLogIn
     }
     
     // propert to get signIn caption (subheading)
     var signInCaption: String {
-        isNewUser ? Constants.signInTitleCaption1 : Constants.signInTitleCaption2
+        isNewUser ? Constants.SignInView.captionSignUp : Constants.SignInView.captionLogIn
     }
     
     // get signin button text
     var signInButtonText: String {
-        isNewUser ? Constants.signUpButtonText : Constants.loginButtonText
+        isNewUser ? Constants.PrimaryButton.signUp : Constants.PrimaryButton.logIn
     }
     
     // get a string for have or do not have an account
     var haveAnAccount: String {
-        isNewUser ? Constants.alreadyHaveAnAccount : Constants.dontHaveAnAccount
+        isNewUser ? Constants.SignInView.alreadyHaveAnAccount : Constants.SignInView.dontHaveAnAccount
     }
     
     var haveAnAccountLoginSignup: String {
-        isNewUser ? Constants.logIn : Constants.signUp
+        isNewUser ? Constants.TextButton.logIn : Constants.TextButton.signUp
     }
     
     // instance of TextFieldValidations
@@ -70,11 +70,11 @@ final class ViewModelBase: ObservableObject {
     // property to get selected gender
     // for showing in the menu picker
     var selectedGender: String {
-        userDetailsModel.genderTextFieldValue.isEmpty ? Constants.selectGender : userDetailsModel.genderTextFieldValue
+        userDetailsModel.genderTextFieldValue.isEmpty ? Constants.Placeholder.selectGender : userDetailsModel.genderTextFieldValue
     }
     
     // selected avatar image
-    var avatarImage: Image = Image(systemName: Constants.defaultProfile)
+    var avatarImage: Image = Image(systemName: Constants.DefaultIcons.profilePicture)
     
     
     /// method to enable error message and show alert
@@ -98,6 +98,7 @@ final class ViewModelBase: ObservableObject {
     ///   - data: a dictionary containg the data of type [String: String]
     func sendApiRequest(requestType: RequestType) {
         
+        // get the data from model class
         var data: [String: Any?] {
             switch requestType {
             case .signIn, .signUp :
@@ -105,7 +106,7 @@ final class ViewModelBase: ObservableObject {
                 case .edit :
                     return self.userDetailsModel.getData()
                 case .signOut :
-                    return [Constants.token : UserDefaults.standard.string(forKey: Constants.sessionAuthToken) ?? ""]
+                return [Constants.DictionaryKeys.token : UserDefaults.standard.string(forKey: Constants.UserDefaultKeys.sessionAuthToken) ?? ""]
             }
         }
         
@@ -126,7 +127,7 @@ final class ViewModelBase: ObservableObject {
                                     NavigationViewModel.navigationViewModel.push(.DashboardView)
                                 case .signOut:
                                     NavigationViewModel.navigationViewModel.paths = [.SignInView]
-                                    UserDefaults.standard.set("", forKey: Constants.sessionAuthToken)
+                                    UserDefaults.standard.set("", forKey: Constants.UserDefaultKeys.sessionAuthToken)
                                 }
                             
                             if let data = ApiServices.shared.userData {
@@ -135,19 +136,19 @@ final class ViewModelBase: ObservableObject {
                         }
                         // Status code: 401 (invalid email or password) returned in case of login
                         else if result == 401 {
-                            self?.enableErrorMessage(error: Constants.invalidEmailPassword)
+                            self?.enableErrorMessage(error: Constants.Errors.invalidEmailPassword)
                         }
                         // Status code: 422 (user already exists) returned in the case of signup
                         else if result == 422 {
-                            self?.enableErrorMessage(error: Constants.userAlreadyExists)
+                            self?.enableErrorMessage(error: Constants.Errors.userAlreadyExists)
                         }
                         // Status code: 404 (unable to reach server or server is down)
                         else if result == 404 {
-                            self?.enableErrorMessage(error: Constants.unableToConnectWithServer)
+                            self?.enableErrorMessage(error: Constants.Errors.unableToConnect)
                         }
                         // else some other kind or error has occured
                         else{
-                            self?.enableErrorMessage(error: Constants.couldntConnectToServer)
+                            self?.enableErrorMessage(error: Constants.Errors.noInternetConnection)
                         }
                     // if response is failure
                     // set the erro message and alert the user

@@ -11,11 +11,18 @@ struct SignInView: View {
     
     // MARK: properties
     
-    // model class for signin properties
-    @State var signInModel = SignInModel()
-    
     // environment object for signin viewmodel
-    @EnvironmentObject private var signInViewModel: SignInViewModel 
+    @EnvironmentObject private var viewModelObj: ViewModelBase 
+
+    // model class for signin properties
+    @State var signInModel = SignInModel() {
+        willSet{
+            // set the value of signInModel
+            // in view model's signInModel instance
+            // equal to this view's instance
+            viewModelObj.signInModel = signInModel
+        }
+    }
     
     // check if user is new or existing
     // this bool is used to show signup or login
@@ -25,103 +32,118 @@ struct SignInView: View {
         // when the value of new user is changed
         // reset all values of text fields and other bool
         // used with them
-        didSet {
-            signInModel.resetValues()
+        willSet {
+            
+            // reset the text field values
+            signInModel = .init()
+
+            //set value in sign in view model
+            viewModelObj.isNewUser = isNewUser
         }
     }
     
-    // property to get type of signin (heading/title)
-    var signInType: String {
-        isNewUser ? Constants.signUp : Constants.logIn
-    }
     
-    // propert to get signIn caption (subheading)
-    var signInCaption: String {
-        isNewUser ? Constants.signInTitleCaption1 : Constants.signInTitleCaption2
-    }
-    
-    // get signin button text
-    var signInButtonText: String {
-        isNewUser ? Constants.signUpButtonText : Constants.loginButtonText
-    }
-    
-    // get a string for have or do not have an account
-    var haveAnAccount: String {
-        isNewUser ? Constants.alreadyHaveAnAccount : Constants.dontHaveAnAccount
-    }
-    
-    // instance of TextFieldValidations
-    private let textFieldValidate = TextFieldValidations()
+    // MARK: body
     
     var body: some View {
+        
         ScrollView {
+        
             VStack{
                 
-                TitleAndCaption(title: signInType, caption: signInCaption)
+                // title and caption
+                TitleAndCaption(
+                    title:      viewModelObj.signInType,
+                    caption:    viewModelObj.signInCaption
+                )
                 
-                Group{
-                    DefaultTextField(placeholder: Constants.emailAddress, textFieldValue: $signInModel.emailTextFieldValue)
-                        .keyboardType(.emailAddress)
-                        .onChange(of: signInModel.emailTextFieldValue){
-                            text in
-                            withAnimation{
-                                signInModel.emailValidationMessage = textFieldValidate.validateEmailPassword(value: text, flag: false)
-                            }
-                        }
-                    
-                    ValidationMessage(validationMessage: $signInModel.emailValidationMessage)
-                    
-                    
-                    PasswordTextField(textFieldValue: $signInModel.passwordTextFieldValue, placeholder: Constants.password, originalPassword: signInModel.confirmPasswordTextFieldValue, isPasswordVisible: $signInModel.isPasswordVisible, passwordValidationMessage: $signInModel.passwordValidationMessage, confirmPasswordValidationMessage: $signInModel.confirmPasswordValidationMessage)
-                    
-                    ValidationMessage(validationMessage: $signInModel.passwordValidationMessage)
-                    
-                    if isNewUser {
-                        
-                        PasswordTextField(textFieldValue: $signInModel.confirmPasswordTextFieldValue, placeholder: Constants.confirmPassword, originalPassword: signInModel.passwordTextFieldValue, isPasswordVisible: $signInModel.isConfirmPasswordVisible, passwordValidationMessage: $signInModel.passwordValidationMessage, confirmPasswordValidationMessage: $signInModel.confirmPasswordValidationMessage)
-                        
-                        ValidationMessage(validationMessage: $signInModel.confirmPasswordValidationMessage)
-                            .onAppear{
-                                signInModel.confirmPasswordValidationMessage = ""
-                            }
+                // text and password fields
+                
+                // email address
+                TextFieldAndValidationDrawer(
+                    placeholder:        Constants.Placeholder.email,
+                    textFieldValue:     $signInModel.emailTextFieldValue,
+                    valitaionMessage:   $signInModel.emailValidationMessage
+                )
+                .keyboardType(.emailAddress)
+                .onChange(of: signInModel.emailTextFieldValue)
+                {
+                    text in
+                    withAnimation{
+                        signInModel.emailValidationMessage = viewModelObj
+                            .textFieldValidate
+                            .validateEmailPassword(
+                                value:  text,
+                                flag:   false
+                            )
                     }
                 }
-                .autocorrectionDisabled(true)
-                .textInputAutocapitalization(.never)
                 
+                // password
+                PasswordFieldAndValidation(
+                    viewModelBaseObj:    viewModelObj,
+                    signInModel:        $signInModel,
+                    placeholder:        Constants.Placeholder.password
+                )
+
+                // confirm password
+                if isNewUser {
+                    PasswordFieldAndValidation(
+                        viewModelBaseObj:    viewModelObj,
+                        signInModel:        $signInModel,
+                        placeholder:        Constants.Placeholder.confirmPassword
+                    )
+                }
+                
+                // signin button
                 Button(action: {
                     
-                    signInModel.checkForValidations(textFieldValidate: textFieldValidate, isNewUser: isNewUser)
+                    // check for text field validations
+                    signInModel.checkForValidations(
+                        textFieldValidate:  viewModelObj.textFieldValidate,
+                        isNewUser:          isNewUser
+                    )
                     
                     // check if validation messages are empty
-                    if (
-                        signInModel.checkForValidationMessages(textFieldValidate: textFieldValidate)
-                    ){
-                        
-                        // check the request type
-                        let requestType = isNewUser ? RequestType.signUp : RequestType.signIn
-                        // create a data dictionary
-                        let data = signInModel.getData()
-                        
+                    let checkValidations: Bool = signInModel.checkForValidationMessages(
+                        textFieldValidate: viewModelObj.textFieldValidate
+                    )
+                    
+                    // if true call the api
+                    if (checkValidations){
                         // call the sendApiRequest method
-                        signInViewModel.sendApiRequest(requestType: requestType, data: data)
+                        viewModelObj
+                            .sendApiRequest(
+                                requestType: isNewUser ? .signUp : .signIn
+                            )
                     }
+                    
                 }, label: {
-                    ButtonLabel(buttonText: signInButtonText)
+                    // button text
+                    ButtonLabel(buttonText: viewModelObj.signInButtonText)
                 })
                 .padding(.vertical, 24)
                 
                 
+                // bottom option for
+                // changing to signin view
+                // if user already have an account
+                // or back to signup if
+                // user doen't have an account
                 HStack(spacing: 4){
                     
-                    Text(haveAnAccount)
+                    // already / don't have an account text
+                    Text(viewModelObj.haveAnAccount)
                     
+                    // button
                     Button(action: {
+                        // change to login/signup view with isNewUser toggle (false/true)
                         withAnimation{
                             isNewUser.toggle()
                         }
                     }, label: {
-                        Text(isNewUser ? Constants.logIn : Constants.signUp)
+                        // set the Sign Up or Log In text on the clickable button
+                        Text(isNewUser ? Constants.TextButton.signUp : Constants.TextButton.logIn)
                             .fontWeight(.semibold)
                     })
                 }
@@ -131,14 +153,15 @@ struct SignInView: View {
             }
             .padding()
             .navigationBarBackButtonHidden(true)
-            .alert(signInViewModel.errorMessage, isPresented: $signInViewModel.showErrorAlert) {
-                Button(Constants.okay, role: .cancel) {
-                        signInViewModel.showErrorAlert = false
-                        signInViewModel.errorMessage = ""
+            // show user alert if any error has encountered
+            .alert(viewModelObj.errorMessage, isPresented: $viewModelObj.showErrorAlert) {
+                Button(Constants.TextButton.okay, role: .cancel) {
+                    viewModelObj.disableErrorMessage()
                 }
             }
             .onAppear{
-                signInModel.resetValues()
+                // reset the text field and validation values when the view appears
+                signInModel = .init()
             }
         }
     }
@@ -147,5 +170,6 @@ struct SignInView: View {
 struct SignInView_Previews: PreviewProvider {
     static var previews: some View {
         SignInView()
+            .environmentObject(ViewModelBase())
     }
 }

@@ -18,18 +18,18 @@ struct TextFieldValidations {
     /// - Returns: a string value containing validation message
     func validateAgeTextField(value: String) -> String {
         // variable to store the regular expression
-        let regEx = Constants.ageRegEx
+        let regEx = Constants.ValidationRegex.age
         // set a predicate value used to validate value with regEx
-        let predicate = NSPredicate(format: Constants.predicateFormat, regEx)
+        let predicate = NSPredicate(format: Constants.PredicateFormat.selfMatches, regEx)
         
         // if value is empty or validate is successfull
         // return empty string
         // empty string indicates no error message will be shown to user
         if value.isEmpty {
-            return Constants.emptyTextField
+            return Constants.ValidationMessages.emptyTextField
         }
         else if predicate.evaluate(with: value) {
-            return Constants.invalidAge
+            return Constants.ValidationMessages.invalidAge
         }
         return ""
     }
@@ -43,10 +43,13 @@ struct TextFieldValidations {
     /// - Returns: validation message string
     func validateEmailPassword(value: String, flag: Bool) -> String {
         
+        // validation regex struct
+        let validationRegex = Constants.ValidationRegex.self
+        
         // variable to store the regular expression
-        let regEx = flag ? Constants.passwordRegEx : Constants.emailRegEx
+        let regEx = flag ? validationRegex.password : validationRegex.email
         // set a predicate value used to validate value with regEx
-        let predicate = NSPredicate(format: Constants.predicateFormat, regEx)
+        let predicate = NSPredicate(format:Constants.PredicateFormat.selfMatches, regEx)
         
         // if value is empty or validate is successfull
         // return empty string
@@ -59,16 +62,16 @@ struct TextFieldValidations {
         // validate for password
         if flag {
             if value.count < 8 {
-                return Constants.lessPasswordChars
+                return Constants.ValidationMessages.passwordCountUnderflow
             }
             else if value.count > 16 {
-                return Constants.maxPasswordChars
+                return Constants.ValidationMessages.passwordCountOverflow
             }
-            return Constants.passwordMustContain
+            return Constants.ValidationMessages.passwordMustContains
             
         }
         // else validate for email
-        return Constants.invalidEmailAddress
+        return Constants.ValidationMessages.invalidEmail
         
     }
     
@@ -82,7 +85,7 @@ struct TextFieldValidations {
         
         // passwords do not match
         if !confirmPassword.isEmpty && originalPassword != confirmPassword {
-            return Constants.passwordsDoNotMatch
+            return Constants.ValidationMessages.passwordsMismatch
         }
         // passwords match
         return ""
@@ -94,7 +97,7 @@ struct TextFieldValidations {
     /// - Parameter text: string value of a text field
     /// - Returns: validate message string
     func checkEmptyTextFields(text: String) -> String? {
-        text.isEmpty ? Constants.emptyTextField : ""
+        text.isEmpty ? Constants.ValidationMessages.emptyTextField : ""
     }
     
     

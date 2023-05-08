@@ -6,116 +6,136 @@
 //
 
 import Foundation
+
 struct Constants {
     
-    // MARK: - strings
-    static let signInTitle = "%@ to Application"
-    static let signInTitleCaption1 = "Create a new account to continue."
-    static let signInTitleCaption2 = "Welcome back, login to continue."
-    static let aboutYou = "About you"
-    static let aboutYouCaption = "Tell us a bit more about you for more personalized experience."
+    // MARK: - signin view
+    struct SignInView {
+        
+        static let titleSignUp              = "SignUp"
+        static let captionSignUp            = "Create a new account to continue."
+        
+        static let titleLogIn               = "SignIn"
+        static let captionLogIn             = "Welcome back, login to continue."
+        
+        static let alreadyHaveAnAccount     = "Already have an account?"
+        static let dontHaveAnAccount        = "Don't have an account?"
+    }
     
-    static let signUp = "Sign Up"
-    static let logIn = "Log In"
-    static let logOut = "Log Out"
-    
-    static let signUpButtonText = "Create account"
-    static let loginButtonText = "Continue"
-    static let profileButtonText = "Complete profile"
-    
-    static let emailAddress = "Email Address"
-    static let password = "Password"
-    static let confirmPassword = "Confirm Password"
-    
-    static let firstName = "First name"
-    static let lastName = "Last name"
-    static let age = "Age"
-    static let selectGender = "Select Gender"
-    static let selectImage = "Select Image"
-    
-    static let alreadyHaveAnAccount = "Already have an account?"
-    static let dontHaveAnAccount = "Don't have an account?"
+    // MARK: - profile view
+    struct ProfileView {
+        
+        static let aboutYou         = "About you"
+        static let aboutYouCaption  = "Tell us a bit more about you for more personalized experience."
+    }
     
     // MARK: - string arrays
-    static let genderOptions = ["Male", "Female", "Other"]
+    struct StringArrays {
+        
+        static let genderOptions = ["Male", "Female", "Other"]
+    }
     
-    // MARK: - urls
-    static let baseURL = "https://2c60-112-196-113-2.ngrok-free.app/%@"
-    static let signupURL = "users"
-    static let signoutURL = "users/sign_out"
-    static let signinURL = "users/sign_in"
-    static let editURL = "edit"
+    // MARK: - text button strings
+    struct TextButton {
+        static let signUp   = "Sign Up"
+        static let logIn    = "Log In"
+        static let logOut   = "Log Out"
+        static let okay     = "OK"
+    }
     
-    // MARK: - api related strings
-    static let httpMethodPOST = "POST"
-    static let httpMethodPUT = "PUT"
-    static let httpMethodDELETE = "DELETE"
-    static let contentType = "application/json"
-    static let multipartFormData = "multipart/form-data; boundary=\(boundary)"
-    static let httpHeaderField = "Content-Type"
-    static let token = "token"
-    static let authorization = "Authorization"
+    // MARK: - primary button strings
+    struct PrimaryButton {
+        static let signUp           = "Create account"
+        static let logIn            = "Continue"
+        static let completeProfile  = "Complete profile"
+    }
     
-    static let keyUser = "user"
+    // MARK: - placholder strings
+    struct Placeholder {
+        
+        static let email            = "Email Address"
+        static let password         = "Password"
+        static let confirmPassword  = "Confirm Password"
+        
+        static let firstName        = "First name"
+        static let lastName         = "Last name"
+        static let age              = "Age"
+        static let selectGender     = "Select Gender"
+        static let selectImage      = "Select Image"
+    }
     
-    static let keyEmail = "email"
-    static let keyPassword = "password"
-    
-    static let keyFirstName = "first_name"
-    static let keyLastName = "last_name"
-    static let keyAge = "age"
-    static let keyGender = "gender"
-    static let keyImageUrl = "image_url"
+    // MARK: - dictionary keys
+    struct DictionaryKeys {
+        
+        static let user         = "user"
+        
+        static let email        = "email"
+        static let password     = "password"
+        
+        static let firstName    = "first_name"
+        static let lastName     = "last_name"
+        static let age          = "age"
+        static let gender       = "gender"
+        static let image        = "image"
+        static let imageURL     = "image_url"
+        
+        static let token        = "token"
+    }
     
     // MARK: - icons
-    static let passwordHidden = "eye.slash"
-    static let passwordVisible = "eye"
-    static let defaultProfile = "person.circle.fill"
-    
-    // MARK: - regex
-    static let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
-    static let passwordRegEx = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,16}$"
-    static let ageRegEx = "[A-Za-z]+"
-    
-    // MARK: - errors
-    static let invalidURLError = "Error: Invalid URL"
+    struct DefaultIcons {
+        
+        static let passwordHidden   = "eye.slash"
+        static let passwordVisible  = "eye"
+        static let profilePicture   = "person.circle.fill"
+    }
     
     // MARK: - user defaults
-    static let sessionAuthToken = "Session-Auth-Token"
+    struct UserDefaultKeys {
+        
+        static let sessionAuthToken = "Session-Auth-Token"
+    }
     
-    // MARK: - others
-    static let predicateFormat = "SELF MATCHES %@"
+    // MARK: - predicates
+    struct PredicateFormat {
+        
+        static let selfMatches = "SELF MATCHES %@"
+    }
     
-    static let okay = "OK"
+    // MARK: - regex
+    struct ValidationRegex {
+        
+        static let email        = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+        static let password     = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,16}$"
+        static let age          = "[A-Za-z]+"
+    }
     
     // MARK: - validation messages
-    static let lessPasswordChars = "Password must contain mininum 8 characters"
-    static let maxPasswordChars = "Password length exceeds max allowed length. Maximum length allowed is 16 characters"
-    static let passwordMustContain = "Password must contain at least one letter, one number and one special character"
+    struct ValidationMessages {
+        
+        static let passwordCountUnderflow   = "Password must contain mininum 8 characters"
+        static let passwordCountOverflow    = "Password length exceeds max allowed length. Maximum length allowed is 16 characters"
+        static let passwordMustContains     = "Password must contain at least one letter, one number and one special character"
+        
+        static let invalidEmail             = "Invalid email address"
+        
+        static let passwordsMismatch        = "Passwords do not match"
+        
+        static let emptyTextField           = "*Field is empty"
+        
+        static let invalidAge               = "Invalid age. Only digits are allowed"
+    }
     
-    static let invalidEmailAddress = "Invalid email address"
-    
-    static let passwordsDoNotMatch = "Passwords do not match"
-    
-    static let emptyTextField = "*Field is empty"
-    
-    static let invalidAge = "Invalid age. Only digits are allowed"
-    
-    // MARK: - alert errors
-    static let invalidEmailPassword = "Invalid email or password"
-    static let userAlreadyExists = "User already exists"
-    static let unableToConnectWithServer = "Unable to connect with the server. Check your internet connection"
-    static let couldntConnectToServer = "Couldn't connect to server. Please try again later"
-    
-    static let imageNotSetPhotosPicker = "Couldn't select a profile image"
-    
-    // MARK: - string format
-    static let lineBreak = "\r\n"
-    static let boundary = "Boundary-\(NSUUID().uuidString)"
-    static let imageMimeTypeJpeg = "image/jpeg"
-    static let imageContentType = "Content-Type: %@\(lineBreak + lineBreak)"
-    static let imageContentDisposition = "Content-Disposition: form-data; name=\"%@\"; filename=image.jpg\(lineBreak)"
-    static let dataContentDisposition = "Content-Disposition: form-data; name=\"%@\"\(lineBreak + lineBreak)"
-    static let boudaryWithLineBreak = "--\(boundary + lineBreak)"
-
+    // MARK: - errors
+    struct Errors {
+        
+        static let invalidUrl               = "Error: Invalid URL"
+        
+        static let invalidEmailPassword     = "Invalid email or password"
+        static let userAlreadyExists        = "User already exists"
+        static let unableToConnect          = "Unable to connect with the server. Check your internet connection"
+        static let noInternetConnection     = "Couldn't connect to server. Please try again later"
+        
+        static let imageNotSet              = "Couldn't select a profile image"
+    }
 }

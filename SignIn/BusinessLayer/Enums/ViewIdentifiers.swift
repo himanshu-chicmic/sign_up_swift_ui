@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 /// enum for view identifiers
 /// used in navigation stack paths
 enum ViewIdentifiers{

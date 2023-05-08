@@ -7,6 +7,9 @@
 
 import SwiftUI
 
+
+/// view to show title and caption
+/// at the top of the screen
 struct TitleAndCaption: View {
     
     // title and caption variables
@@ -26,7 +29,6 @@ struct TitleAndCaption: View {
                 .font(.system(size: 14))
                 .padding(.bottom, 34)
                 .multilineTextAlignment(.center)
-
         }
     }
 }

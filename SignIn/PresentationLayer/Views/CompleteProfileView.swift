@@ -13,28 +13,18 @@ struct CompleteProfileView: View {
     // MARK: properties
     
     // environmnt object for signin viewmodel
-    @EnvironmentObject private var signInViewModel: SignInViewModel
+    @EnvironmentObject private var viewModelObj: ViewModelBase
     
-    @State var userDetailsModel = UserDetailsModel()
-    
-    // instance for textFieldValidations
-    private let textFieldValidate = TextFieldValidations()
-    
-    // property to get the text field value color
-    // in gender field (selectable in menu style)
-    var textColor: Color {
-        userDetailsModel.genderTextFieldValue.isEmpty ? .gray.opacity(0.5) : .black
-    }
-    
-    // property to get selected gender
-    // for showing in the menu picker
-    var selectedGender: String {
-        userDetailsModel.genderTextFieldValue.isEmpty ? Constants.selectGender : userDetailsModel.genderTextFieldValue
+    // user details model class instance
+    @State var userDetailsModel = UserDetailsModel() {
+        willSet{
+            // set value in view model
+            viewModelObj.userDetailsModel = userDetailsModel
+        }
     }
     
     // photos picker item
     @State private var avatarItem: PhotosPickerItem?
-    @State private var avatarImage: Image = Image(systemName: Constants.defaultProfile)
     
     // MARK: body
     
@@ -42,94 +32,137 @@ struct CompleteProfileView: View {
         ScrollView {
             VStack{
                 // top bar for showing title and caption
-                TitleAndCaption(title: Constants.aboutYou, caption: Constants.aboutYouCaption)
+                TitleAndCaption(
+                    title:      Constants.ProfileView.aboutYou,
+                    caption:    Constants.ProfileView.aboutYouCaption
+                )
                 
                 // photos picker item
                 VStack {
-                    avatarImage
+                    // display image
+                    viewModelObj.avatarImage
                         .resizable()
                         .scaledToFill()
                         .frame(width: 100, height: 100, alignment: .center)
                         .clipShape(Circle())
-                    PhotosPicker(Constants.selectImage, selection: $avatarItem, matching: .images)
-                        .font(.system(size: 14))
+                    
+                    // photos picker item button
+                    // to pick a photo from gallery
+                    PhotosPicker(Constants.Placeholder.selectImage,
+                        selection:  $avatarItem,
+                        matching:   .images
+                    )
+                    .font(.system(size: 14))
                 }
                 .padding(.bottom)
                 .onChange(of: avatarItem) { _ in
                     Task {
+                        // get the data
                         if let data = try? await avatarItem?.loadTransferable(type: Data.self) {
+                            // get ui image
                             if let uiImage = UIImage(data: data) {
+                                // set the uiImageData
+                                // and update the image in the view
                                 withAnimation{
                                     userDetailsModel.uiImageData = uiImage
-                                    avatarImage = Image(uiImage: uiImage)
+                                    viewModelObj.avatarImage = Image(uiImage: uiImage)
                                 }
+                                // return
                                 return
                             }
                         }
-
-                        signInViewModel.errorMessage = Constants.imageNotSetPhotosPicker
-                        signInViewModel.showErrorAlert = true
+                        else {
+                            // set the error message
+                            // set show alert to true
+                            viewModelObj.errorMessage = Constants.Errors.imageNotSet
+                            viewModelObj.showErrorAlert = true
+                        }
                     }
                 }
                 
                 
                 // first name text field
-                TextFieldAndValidationDrawer(placeholder: Constants.firstName, textFieldValue: $userDetailsModel.firstNameTextFieldValue, valitaionMessage: $userDetailsModel.firstNameValidationMessage)
+                TextFieldAndValidationDrawer(
+                    placeholder:        Constants.Placeholder.firstName,
+                    textFieldValue:     $userDetailsModel.firstNameTextFieldValue,
+                    valitaionMessage:   $userDetailsModel.firstNameValidationMessage
+                )
                 
                 // last name text field
-                TextFieldAndValidationDrawer(placeholder: Constants.lastName, textFieldValue: $userDetailsModel.lastNameTextFieldValue, valitaionMessage: $userDetailsModel.lastNameValidationMessage)
+                TextFieldAndValidationDrawer(
+                    placeholder:        Constants.Placeholder.lastName,
+                    textFieldValue:     $userDetailsModel.lastNameTextFieldValue,
+                    valitaionMessage:   $userDetailsModel.lastNameValidationMessage
+                )
                 
                 // age text field
-                TextFieldAndValidationDrawer(placeholder: Constants.age, textFieldValue: $userDetailsModel.ageTextFieldValue, valitaionMessage: $userDetailsModel.ageValidationMessage)
-                    .onChange(of: userDetailsModel.ageTextFieldValue){
-                        text in
-                        if text.count > 2 {
-                            userDetailsModel.ageTextFieldValue = String(text.prefix(2))
-                        }
+                TextFieldAndValidationDrawer(
+                    placeholder:        Constants.Placeholder.age,
+                    textFieldValue:     $userDetailsModel.ageTextFieldValue,
+                    valitaionMessage:   $userDetailsModel.ageValidationMessage
+                )
+                .keyboardType(.numberPad)
+                .onChange(of: userDetailsModel.ageTextFieldValue){
+                    text in
+                    // keep the age limit to only 2 digits
+                    // if the count of ageTextFieldValue is more than two
+                    // get the substring and and assign the ageTextField
+                    // thus it always remains less than or equal to two digits
+                    if text.count > 2 {
+                        userDetailsModel.ageTextFieldValue = String(text.prefix(2))
                     }
-                
-                // menu for selecting gender
-                Menu {
-                    Picker(selection: $userDetailsModel.genderTextFieldValue) {
-                        ForEach(Constants.genderOptions.reversed(), id: \.self) { value in
-                            Text(value)
-                        }
-                    } label: {}
-                } label: {
-                    HStack{
-                        Text(selectedGender)
-                            .foregroundColor(textColor)
-                        Spacer()
-                    }
-                    .frame(maxWidth: .infinity)
                 }
-                .font(.system(size: 14))
-                .padding()
-                .frame(height: 52)
-                .background(.gray.opacity(0.25))
-                .cornerRadius(6)
                 
-                ValidationMessage(validationMessage: $userDetailsModel.genderValidationMessage)
+                // menu for selecting gender with validation message
+                Group{
+                    Menu {
+                        // set the picker
+                        // get the genders and place in seleciton
+                        // array
+                        Picker(selection: $userDetailsModel.genderTextFieldValue) {
+                            ForEach(Constants.StringArrays.genderOptions.reversed(), id: \.self) { value in
+                                Text(value)
+                            }
+                        } label: {}
+                    } label: {
+                        // set the label for menu
+                        HStack{
+                            Text(viewModelObj.selectedGender)
+                                .foregroundColor(viewModelObj.textColor)
+                            Spacer()
+                        }
+                        .frame(maxWidth: .infinity)
+                    }
+                    .font(.system(size: 14))
+                    .padding()
+                    .frame(height: 52)
+                    .background(.gray.opacity(0.25))
+                    .cornerRadius(6)
+                    
+                    // validation message for select gender menu
+                    ValidationMessage(validationMessage: $userDetailsModel.genderValidationMessage)
+                }
                 
                 // continue button
                 Button(action: {
                     
-                    userDetailsModel.checkForValidations(textFieldValidate: textFieldValidate)
+                    // check for text field validations
+                    userDetailsModel
+                        .checkForValidations(textFieldValidate: viewModelObj.textFieldValidate)
                     
                     // check if validations messages are all empty
-                    if (userDetailsModel.checkForValidationMessages(textFieldValidate: textFieldValidate)
-                    ){
-                        
-                        // create data for sending with api request
-                        let data = userDetailsModel.getData()
-                        
+                    let checkValidations: Bool = userDetailsModel.checkForValidationMessages(textFieldValidate: viewModelObj.textFieldValidate)
+                    
+                    // if true call the api method
+                    if (checkValidations){
                         // call sendApiRequest method in signInViewModel
                         // with request type and data as arguments
-                        signInViewModel.sendApiRequest(requestType: .edit, data: data)
+                        viewModelObj.sendApiRequest(requestType: .edit)
                     }
                     
                 }, label: {
-                    ButtonLabel(buttonText: Constants.profileButtonText)
+                    // text for continue button
+                    ButtonLabel(buttonText: Constants.PrimaryButton.completeProfile)
                 })
                 .padding(.vertical, 24)
                 
@@ -137,14 +170,15 @@ struct CompleteProfileView: View {
             }
             .padding()
             .navigationBarBackButtonHidden(true)
-            .alert(signInViewModel.errorMessage, isPresented: $signInViewModel.showErrorAlert) {
-                    Button(Constants.okay, role: .cancel) {
-                        signInViewModel.showErrorAlert = false
-                        signInViewModel.errorMessage = ""
+            // show user alert if any error has encountered
+            .alert(viewModelObj.errorMessage, isPresented: $viewModelObj.showErrorAlert) {
+                Button(Constants.TextButton.okay, role: .cancel) {
+                        viewModelObj.disableErrorMessage()
                     }
             }
             .onAppear{
-                userDetailsModel.resetValues()
+                // reset the text field and validation values when the view appears
+                userDetailsModel = .init()
             }
         }
     }
@@ -153,5 +187,6 @@ struct CompleteProfileView: View {
 struct CompleteProfileView_Previews: PreviewProvider {
     static var previews: some View {
         CompleteProfileView()
+            .environmentObject(ViewModelBase())
     }
 }

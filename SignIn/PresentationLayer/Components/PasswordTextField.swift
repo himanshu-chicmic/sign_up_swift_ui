@@ -7,31 +7,37 @@
 
 import SwiftUI
 
+
+/// view for creating password text fields
+/// with show/hide password functions
 struct PasswordTextField: View {
     
     // MARK: properties
     
-    // instance for textFieldValidations
-    private let textFieldValidate = TextFieldValidations()
+    // observed object for viewModelBase class
+    @ObservedObject var viewModelBase: ViewModelBase
+    
+    // binding varialble for signInModel
+    @Binding var signInModel: SignInModel
+    
+    // placeholder for text field
+    var placeholder: String
     
     // binding var for textfield value
     @Binding var textFieldValue: String
-    // placeholder for text field
-    var placeholder: String
+    
     // password (original or confirm)
-    var originalPassword: String
-    
-    // binding variable for password visibility (secure or text)
-    @Binding var isPasswordVisible: Bool
-    
+    var toMatchWithPassword: String
+     
     // property to get the icon based of the bool val of isPasswordVisible
     var passwordVisibilityIcon: String {
-        isPasswordVisible ? Constants.passwordVisible : Constants.passwordHidden
+        isPasswordVisible ? Constants.DefaultIcons.passwordVisible : Constants.DefaultIcons.passwordHidden
     }
     
-    // binding variables for password and confirm password validations
-    @Binding var passwordValidationMessage: String
-    @Binding var confirmPasswordValidationMessage: String
+    // binding variable for password visibility
+    @Binding var isPasswordVisible: Bool
+    
+    // MARK: body
     
     var body: some View {
         VStack{
@@ -45,7 +51,8 @@ struct PasswordTextField: View {
                 else {
                     SecureField(placeholder, text: $textFieldValue)
                 }
-                    
+                  
+                // password toggle button
                 Button(action: {
                     isPasswordVisible.toggle()
                 }, label: {
@@ -59,15 +66,45 @@ struct PasswordTextField: View {
             .cornerRadius(6)
             .onChange(of: textFieldValue){
                 text in
-                withAnimation{
-                    // calling validation methods
-                    
-                    // for password validation message
-                    if placeholder != Constants.confirmPassword {
-                        passwordValidationMessage = textFieldValidate.validateEmailPassword(value: text, flag: true)
+                // check if user is new
+                // we don't need password validation during login
+                if viewModelBase.isNewUser {
+                    withAnimation{
+                        
+                        // for password validation message
+                        if placeholder != Constants.Placeholder.confirmPassword {
+                            signInModel.passwordValidationMessage = viewModelBase
+                                .textFieldValidate
+                                .validateEmailPassword(
+                                    value:  text,
+                                    flag:   true
+                                )
+                        }
+                        // for confirm password validation message
+                        // if password is confirm password
+                        // send toMatchPassword as original
+                        // else send toMatchPassword as confirm password
+                        
+                        signInModel
+                            .confirmPasswordValidationMessage = (placeholder == Constants.Placeholder.confirmPassword)
+                            // when user types confirm password
+                            // then show error in confirm password validation
+                            // by matching with original password
+                            ? viewModelBase
+                                .textFieldValidate
+                                .validateConfirmPassword(
+                                    originalPassword:   toMatchWithPassword,
+                                    confirmPassword:    text)
+                            // when confirm password is not empty
+                            // and user tries to change original password
+                            // then show error in confirm password validation
+                            // by matching the orignal password with confirm password
+                            : viewModelBase
+                                .textFieldValidate
+                                .validateConfirmPassword(
+                                    originalPassword:   text,
+                                    confirmPassword:    toMatchWithPassword)
                     }
-                    // for confirm password validation message
-                    confirmPasswordValidationMessage = (placeholder == Constants.confirmPassword) ? textFieldValidate.validateConfirmPassword(originalPassword: originalPassword, confirmPassword: text) : textFieldValidate.validateConfirmPassword(originalPassword: text, confirmPassword: originalPassword)
                 }
             }
         }

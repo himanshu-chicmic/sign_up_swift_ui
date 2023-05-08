@@ -2,7 +2,7 @@
 //  SignInModel.swift
 //  SignIn
 //
-//  Created by Nitin on 5/3/23.
+//  Created by Himanshu on 5/3/23.
 //
 
 import Foundation
@@ -10,31 +10,28 @@ import Foundation
 struct SignInModel {
     
     // text field values
-    var emailTextFieldValue: String = ""
-    var passwordTextFieldValue: String = ""
-    var confirmPasswordTextFieldValue: String = ""
+    var emailTextFieldValue: String
+    var passwordTextFieldValue: String
+    var confirmPasswordTextFieldValue: String
     
     // validation messages
-    var emailValidationMessage: String = ""
-    var passwordValidationMessage: String = ""
-    var confirmPasswordValidationMessage: String = ""
+    var emailValidationMessage: String
+    var passwordValidationMessage: String
+    var confirmPasswordValidationMessage: String
     
     // visibility for password and confirm password
-    var isConfirmPasswordVisible: Bool = false
-    var isPasswordVisible: Bool = false
+    var isConfirmPasswordVisible: Bool
+    var isPasswordVisible: Bool
     
-    
-    mutating func resetValues() {
-        emailTextFieldValue = ""
-        passwordTextFieldValue = ""
-        confirmPasswordTextFieldValue = ""
-        
-        emailValidationMessage = ""
-        passwordValidationMessage = ""
-        confirmPasswordValidationMessage = ""
-        
-        isConfirmPasswordVisible = false
-        isPasswordVisible = false
+    init() {
+        self.emailTextFieldValue = ""
+        self.passwordTextFieldValue = ""
+        self.confirmPasswordTextFieldValue = ""
+        self.emailValidationMessage = ""
+        self.passwordValidationMessage = ""
+        self.confirmPasswordValidationMessage = ""
+        self.isConfirmPasswordVisible = false
+        self.isPasswordVisible = false
     }
     
     mutating func checkForValidations(textFieldValidate: TextFieldValidations, isNewUser: Bool) {
@@ -57,8 +54,8 @@ struct SignInModel {
     
     func getData() -> [String : Any] {
         return [
-            Constants.keyEmail : emailTextFieldValue,
-            Constants.keyPassword : passwordTextFieldValue
+            Constants.DictionaryKeys.email : emailTextFieldValue,
+            Constants.DictionaryKeys.password : passwordTextFieldValue
         ]
     }
 }

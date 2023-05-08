@@ -7,6 +7,9 @@
 
 import SwiftUI
 
+
+/// button label view to show text
+/// on diffrent buttons in same style
 struct ButtonLabel: View {
     
     // variable for text on button

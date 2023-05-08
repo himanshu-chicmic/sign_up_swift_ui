@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6A130E9E2A03C9A3003BA40D /* UserDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A130E9D2A03C9A3003BA40D /* UserDataModel.swift */; };
+		6ABD81692A08B38F009E00AA /* PasswordFieldAndValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ABD81682A08B38F009E00AA /* PasswordFieldAndValidation.swift */; };
+		6ABD816B2A08DA00009E00AA /* APIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ABD816A2A08DA00009E00AA /* APIConstants.swift */; };
 		6ACCC2332A0232C800DE70CD /* TextFieldAndValidationDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACCC2322A0232C800DE70CD /* TextFieldAndValidationDrawer.swift */; };
 		6ACF7BA529FFAFCA00585C6A /* SignInApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACF7BA429FFAFCA00585C6A /* SignInApp.swift */; };
 		6ACF7BA729FFAFCA00585C6A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACF7BA629FFAFCA00585C6A /* ContentView.swift */; };
@@ -27,12 +30,15 @@
 		6ADCBAD82A00F83E00063C3A /* PasswordTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADCBAD72A00F83E00063C3A /* PasswordTextField.swift */; };
 		6ADCBADA2A0104AA00063C3A /* ValidationMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADCBAD92A0104AA00063C3A /* ValidationMessage.swift */; };
 		6ADCBADC2A01080E00063C3A /* DefaultTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADCBADB2A01080E00063C3A /* DefaultTextField.swift */; };
-		6ADCBADE2A01166700063C3A /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADCBADD2A01166700063C3A /* SignInViewModel.swift */; };
+		6ADCBADE2A01166700063C3A /* ViewModelBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADCBADD2A01166700063C3A /* ViewModelBase.swift */; };
 		6ADCBAE32A012C5400063C3A /* ViewIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADCBAE22A012C5400063C3A /* ViewIdentifiers.swift */; };
 		6ADCBAE52A012CE700063C3A /* NavigationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADCBAE42A012CE700063C3A /* NavigationViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6A130E9D2A03C9A3003BA40D /* UserDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataModel.swift; sourceTree = "<group>"; };
+		6ABD81682A08B38F009E00AA /* PasswordFieldAndValidation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordFieldAndValidation.swift; sourceTree = "<group>"; };
+		6ABD816A2A08DA00009E00AA /* APIConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIConstants.swift; sourceTree = "<group>"; };
 		6ACCC2322A0232C800DE70CD /* TextFieldAndValidationDrawer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldAndValidationDrawer.swift; sourceTree = "<group>"; };
 		6ACF7BA129FFAFCA00585C6A /* SignIn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SignIn.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6ACF7BA429FFAFCA00585C6A /* SignInApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInApp.swift; sourceTree = "<group>"; };
@@ -54,7 +60,7 @@
 		6ADCBAD72A00F83E00063C3A /* PasswordTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordTextField.swift; sourceTree = "<group>"; };
 		6ADCBAD92A0104AA00063C3A /* ValidationMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationMessage.swift; sourceTree = "<group>"; };
 		6ADCBADB2A01080E00063C3A /* DefaultTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultTextField.swift; sourceTree = "<group>"; };
-		6ADCBADD2A01166700063C3A /* SignInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
+		6ADCBADD2A01166700063C3A /* ViewModelBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelBase.swift; sourceTree = "<group>"; };
 		6ADCBAE22A012C5400063C3A /* ViewIdentifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewIdentifiers.swift; sourceTree = "<group>"; };
 		6ADCBAE42A012CE700063C3A /* NavigationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -92,8 +98,6 @@
 				6ADCBAD12A00CB8900063C3A /* NetworkLayer */,
 				6ACF7BC229FFF52900585C6A /* BusinessLayer */,
 				6ACF7BC129FFF50C00585C6A /* PresentationLayer */,
-				6ACF7BA429FFAFCA00585C6A /* SignInApp.swift */,
-				6ACF7BA629FFAFCA00585C6A /* ContentView.swift */,
 				6ACF7BA829FFAFCB00585C6A /* Assets.xcassets */,
 				6ACF7BAA29FFAFCB00585C6A /* Preview Content */,
 			);
@@ -122,6 +126,7 @@
 			isa = PBXGroup;
 			children = (
 				6ACF7BB629FFD4A400585C6A /* Constants.swift */,
+				6ABD816A2A08DA00009E00AA /* APIConstants.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -135,6 +140,7 @@
 				6ADCBAD92A0104AA00063C3A /* ValidationMessage.swift */,
 				6ADCBADB2A01080E00063C3A /* DefaultTextField.swift */,
 				6ACCC2322A0232C800DE70CD /* TextFieldAndValidationDrawer.swift */,
+				6ABD81682A08B38F009E00AA /* PasswordFieldAndValidation.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -142,6 +148,8 @@
 		6ACF7BC129FFF50C00585C6A /* PresentationLayer */ = {
 			isa = PBXGroup;
 			children = (
+				6ACF7BA429FFAFCA00585C6A /* SignInApp.swift */,
+				6ACF7BA629FFAFCA00585C6A /* ContentView.swift */,
 				6ACF7BB229FFD28000585C6A /* Views */,
 				6ACF7BBC29FFF22E00585C6A /* Components */,
 			);
@@ -151,6 +159,7 @@
 		6ACF7BC229FFF52900585C6A /* BusinessLayer */ = {
 			isa = PBXGroup;
 			children = (
+				6AD4F2E52A02610300EE9D3C /* Extensions */,
 				6AD4F2EB2A0264BC00EE9D3C /* Models */,
 				6ADCBADF2A01222F00063C3A /* Enums */,
 				6ADCBAD42A00E83E00063C3A /* Validations */,
@@ -171,6 +180,7 @@
 		6AD4F2EB2A0264BC00EE9D3C /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				6A130E9D2A03C9A3003BA40D /* UserDataModel.swift */,
 				6AD4F2EC2A0264CB00EE9D3C /* SignInModel.swift */,
 				6AD4F2EE2A02686000EE9D3C /* UserDetailsModel.swift */,
 			);
@@ -180,7 +190,7 @@
 		6ADCBAD02A00CB7000063C3A /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				6ADCBADD2A01166700063C3A /* SignInViewModel.swift */,
+				6ADCBADD2A01166700063C3A /* ViewModelBase.swift */,
 				6ADCBAE42A012CE700063C3A /* NavigationViewModel.swift */,
 			);
 			path = ViewModels;
@@ -189,7 +199,6 @@
 		6ADCBAD12A00CB8900063C3A /* NetworkLayer */ = {
 			isa = PBXGroup;
 			children = (
-				6AD4F2E52A02610300EE9D3C /* Extensions */,
 				6ADCBAD22A00CE4900063C3A /* ApiServices.swift */,
 			);
 			path = NetworkLayer;
@@ -289,19 +298,22 @@
 				6ACF7BBB29FFF1E400585C6A /* DashboardView.swift in Sources */,
 				6ADCBAE32A012C5400063C3A /* ViewIdentifiers.swift in Sources */,
 				6AD4F2EF2A02686000EE9D3C /* UserDetailsModel.swift in Sources */,
+				6ABD81692A08B38F009E00AA /* PasswordFieldAndValidation.swift in Sources */,
 				6ACF7BB429FFD2B800585C6A /* SignInView.swift in Sources */,
 				6ACF7BA729FFAFCA00585C6A /* ContentView.swift in Sources */,
 				6ACCC2332A0232C800DE70CD /* TextFieldAndValidationDrawer.swift in Sources */,
 				6AD4F2ED2A0264CB00EE9D3C /* SignInModel.swift in Sources */,
 				6ACF7BBE29FFF31000585C6A /* TitleAndCaption.swift in Sources */,
 				6ADCBAD32A00CE4900063C3A /* ApiServices.swift in Sources */,
-				6ADCBADE2A01166700063C3A /* SignInViewModel.swift in Sources */,
+				6ADCBADE2A01166700063C3A /* ViewModelBase.swift in Sources */,
 				6ACF7BA529FFAFCA00585C6A /* SignInApp.swift in Sources */,
 				6ADCBAD62A00E85100063C3A /* TextFieldValidations.swift in Sources */,
 				6AD4F2EA2A02616600EE9D3C /* RequestType.swift in Sources */,
 				6ADCBADA2A0104AA00063C3A /* ValidationMessage.swift in Sources */,
 				6ADCBAD82A00F83E00063C3A /* PasswordTextField.swift in Sources */,
+				6ABD816B2A08DA00009E00AA /* APIConstants.swift in Sources */,
 				6ACF7BB729FFD4A400585C6A /* Constants.swift in Sources */,
+				6A130E9E2A03C9A3003BA40D /* UserDataModel.swift in Sources */,
 				6AD4F2E72A02611100EE9D3C /* Data+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
