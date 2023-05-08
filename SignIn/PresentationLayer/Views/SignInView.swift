@@ -16,7 +16,7 @@ struct SignInView: View {
 
     // model class for signin properties
     @State var signInModel = SignInModel() {
-        willSet{
+        didSet{
             // set the value of signInModel
             // in view model's signInModel instance
             // equal to this view's instance
@@ -32,7 +32,7 @@ struct SignInView: View {
         // when the value of new user is changed
         // reset all values of text fields and other bool
         // used with them
-        willSet {
+        didSet {
             
             // reset the text field values
             signInModel = .init()

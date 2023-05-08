@@ -12,10 +12,10 @@ struct Constants {
     // MARK: - signin view
     struct SignInView {
         
-        static let titleSignUp              = "SignUp"
+        static let titleSignUp              = "Sign Up"
         static let captionSignUp            = "Create a new account to continue."
         
-        static let titleLogIn               = "SignIn"
+        static let titleLogIn               = "Log In"
         static let captionLogIn             = "Welcome back, login to continue."
         
         static let alreadyHaveAnAccount     = "Already have an account?"
